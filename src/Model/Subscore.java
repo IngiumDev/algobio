@@ -1,15 +1,19 @@
 package Model;
 
 public class Subscore {
-    Subscore subscore;
+    CoordinatePair pair;
     int score;
 
-    public Subscore getSubscore() {
-        return subscore;
+    public CoordinatePair getPair() {
+        return pair;
+    }
+    public Subscore(int l, int r, int score) {
+        this.pair = new CoordinatePair(l, r);
+        this.score = score;
     }
 
-    public void setSubscore(Subscore subscore) {
-        this.subscore = subscore;
+    public void setPair(CoordinatePair pair) {
+        this.pair = pair;
     }
 
     public int getScore() {
@@ -20,8 +24,8 @@ public class Subscore {
         this.score = score;
     }
 
-    public Subscore(Subscore subscore, int score) {
-        this.subscore = subscore;
+    public Subscore(CoordinatePair pair, int score) {
+        this.pair = pair;
         this.score = score;
     }
 }
