@@ -4,6 +4,11 @@ import java.util.ArrayList;
 
 public class AllMSS {
 
+    /*
+    Hier wird der optimale Algorithmus aus der Vorlesung implementiert, mit dem Unterschied, dass zusätzlich eine ArrayList verwaltet wird, sodass alle MSS gespeichert werden.
+    Somit kommen ein paar Elementaroperationen (Vergleiche, Löschen & Addieren von Listenelementen) hinzu, der Algorithmus läuft aber nach wie vor in linearer Zeit.
+     */
+
     public ArrayList<Subscore> findMSS(int[] arr, int n) {
         int max = 0, rmax = 0, rstart = 1;
         int l = 1;

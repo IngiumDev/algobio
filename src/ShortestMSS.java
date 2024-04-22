@@ -4,6 +4,12 @@ import java.util.ArrayList;
 
 public class ShortestMSS {
 
+    /*
+    Hier wird der optimale Algorithmus aus der Vorlesung implementiert, mit dem Unterschied, dass zusätzlich eine ArrayList verwaltet wird, sodass alle MSS gespeichert werden.
+    Im Vergleich zu AllMSS muss hier noch für jede MSS die Länge untersucht werden, dementsprechend kommen ein paar Elementaroperationen hinzu.
+    Die Komplexität ist ebenfalls O(n).
+     */
+
     public ArrayList<Subscore> findMSS(int[] arr, int n) {
         int max = 0, rmax = 0, rstart = 1;
         int l = 1;
