@@ -2,7 +2,7 @@ import Model.Subscore;
 
 import java.util.ArrayList;
 
-public class AllMSS {
+public class ShortestMSS {
 
     public ArrayList<Subscore> findMSS(int[] arr, int n) {
         int max = 0, rmax = 0, rstart = 1;
@@ -27,7 +27,15 @@ public class AllMSS {
                 if (!(l == rstart)) {
                     l = rstart;
                     r = i;
-                    list.add(new Subscore(l, r, max));
+                    if (!list.isEmpty()) {
+                        if (r-l < list.get(0).getPair().getR() - list.get(0).getPair().getL()){
+                            list.clear();
+                            list.add(new Subscore(l, r, max));
+                        }
+                        else if (r-l == list.get(0).getPair().getR() - list.get(0).getPair().getL()){
+                            list.add(new Subscore(l, r, max));
+                        }
+                    }
                 }
             }
         }
