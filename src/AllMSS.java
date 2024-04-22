@@ -1,10 +1,13 @@
 import Model.MSSFinder;
 import Model.Subscore;
 
-public class OptimalRunner implements MSSFinder {
+import java.util.ArrayList;
+
+public class AllMSS implements MSSFinder {
 
     public Subscore findMSS(int[] arr, int n) {
         int max = 0, l = 1, r = 0, rmax = 0, rstart = 1;
+        //ArrayList<Subscore>
         for (int i = 0; i < n; i++) {
             if (rmax > 0) {
                 rmax += arr[i];
