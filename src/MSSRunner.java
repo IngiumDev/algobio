@@ -6,6 +6,8 @@ import net.sourceforge.argparse4j.inf.ArgumentParser;
 import net.sourceforge.argparse4j.inf.MutuallyExclusiveGroup;
 import net.sourceforge.argparse4j.inf.Namespace;
 
+import java.util.ArrayList;
+
 import static net.sourceforge.argparse4j.impl.Arguments.storeTrue;
 
 public class MSSRunner {
@@ -57,10 +59,15 @@ public class MSSRunner {
 
     private static void startBenchmark() {
         MSSFinder[] finders = MSSUtils.createMSSFinderInstances();
+        ArrayList<ArrayList<Double>> results = new ArrayList<>();
+        for (MSSFinder finder : finders) {
+            results.add(new ArrayList<>());
+        }
         for (int size : MSSUtils.SIZES_TO_BENCHMARK) {
             int[] arr = MSSUtils.createRandomArray(size);
             System.out.println("Benchmarking for size " + size + " started");
-            for (MSSFinder finder : finders) {
+            for (int i = 0; i < finders.length; i++) {
+                MSSFinder finder = finders[i];
                 if ((finder.getClass().getName().equals("naivRunner") || finder.getClass().getName().equals("rekursivRunner")) && size > Math.pow(10, 3)) {
                     // TOO SLOW
                     System.out.println("Skipping " + finder.getClass().getSimpleName() + " for size " + size);
@@ -72,18 +79,45 @@ public class MSSRunner {
                     System.out.println("Skipping " + finder.getClass().getSimpleName() + " for size " + size);
                 } else {
 
-                long startTime = System.nanoTime();
-                Subscore result = finder.findMSS(arr, arr.length);
-                long endTime = System.nanoTime();
-                long duration = (endTime - startTime);
-                double microseconds = (double) duration / 1000;
-                //System.out.println("Eingabe: " + MSSUtils.arrayStr(arr));
-                System.out.println("Algorithm: " + finder.getClass().getSimpleName());
-                System.out.println("Ausgabe: " + "[" + result.getPair().getL() + "," + result.getPair().getR() + "] mit Score " + result.getScore());
-                System.out.println("Laufzeit: " + microseconds + " μs"); }
+                    long startTime = System.nanoTime();
+                    Subscore result = finder.findMSS(arr, arr.length);
+                    long endTime = System.nanoTime();
+                    long duration = (endTime - startTime);
+                    double microseconds = (double) duration / 1000;
+                    results.get(i).add(microseconds);
+                    //System.out.println("Eingabe: " + MSSUtils.arrayStr(arr));
+                    System.out.println("Algorithm: " + finder.getClass().getSimpleName());
+                    System.out.println("Ausgabe: " + "[" + result.getPair().getL() + "," + result.getPair().getR() + "] mit Score " + result.getScore());
+                    System.out.println("Laufzeit: " + microseconds + " μs");
+                }
             }
             System.out.println("-----------------------------------");
         }
+        System.out.println("test");
+
+        saveResults(results, finders);
+    }
+
+    private static void saveResults(ArrayList<ArrayList<Double>> results, MSSFinder[] finders) {
+        // Write to CSV output txt. row = size, col = algorithm
+        try (java.io.FileWriter writer = new java.io.FileWriter("benchmark_results.csv")) {
+            writer.write("Algorithm/Size");
+            for (int size : MSSUtils.SIZES_TO_BENCHMARK) {
+                writer.write(","+size);
+            }
+            writer.write("\n");
+            for (int i = 0; i < finders.length; i++) {
+                writer.write(finders[i].getClass().getSimpleName());
+                for (double time : results.get(i)) {
+                    writer.write(","+time);
+                }
+                writer.write("\n");
+            }
+
+        } catch (java.io.IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
 
