@@ -1,7 +1,7 @@
 import Model.MSSFinder;
 import Model.Subscore;
 
-public class naivRunner implements MSSFinder {
+public class naivRunner extends MSSFinder {
 
 
     public static void main(String[] args) {

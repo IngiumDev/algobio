@@ -1,7 +1,7 @@
 import Model.MSSFinder;
 import Model.Subscore;
 
-public class OptimalRunner implements MSSFinder {
+public class OptimalRunner extends MSSFinder {
 
     public Subscore findMSS(int[] arr, int n) {
         int max = 0, l = 1, r = 0, rmax = 0, rstart = 1;
