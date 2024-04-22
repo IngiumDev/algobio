@@ -6,7 +6,9 @@ public class rekursivRunner {
 
     public static void main(String[] args) {
 
-        int[] testcase = {5, -2, 5, -2, 1, -9, 12, -2, 24, -5, 13, -12, 3, -13, 5, -3, 2, -1, 2};
+        //int[] testcase = {5, -2, 5, -2, 1, -9, 12, -2, 24, -5, 13, -12, 3, -13, 5, -3, 2, -1, 2};
+        int[] testcase = {5, -2, 5, -2, 1, -9, 12, -2, 24, -5, 13, -12, 3, -13, 5, -3, 2, -1, 2, 5, 2, -4, 3, 6, 1, -1, -3, 2, -5, 5, 5, 3, 1, 4, 3, 5, -2, -2, -1, 1, -1, 1, -1, 4, -5, -2, 3, 6, 7, 12, 2, -3, 4,2, -4, 3, 6, 1, -1, -3, 2, -5, 5, 5, 3, 1, 4, 3, 5, -2, -2, -1, 1, -1, 1, -1, 4, -5, -2, 3, 6, 7, 12, 2, -3, 4, 2, -4, 3, 6, 1, -1, -3, 2, -5, 5, 5, 3, 1, 4, 3, 5, -2, -2, -1, 1, -1, 1, -1, 4, -5, -2, 3, 6, 7, 12, 2, -3, 4};
+
         long startTime = System.nanoTime();
         recursive(testcase, testcase.length);
         long endTime = System.nanoTime();
@@ -38,7 +40,8 @@ public class rekursivRunner {
         else if (i == j) {
             return arr[i];
         } else {
-            int k = (i + j) / 2;
+            int k = j-1;
+            //int k = (i + j) / 2;
             return calculateScore(i, k, arr) + calculateScore(k+1, j, arr);
         }
     }

@@ -7,6 +7,7 @@ public class naivRunner {
     public static void main(String[] args) {
 
         int[] testcase = {5, -2, 5, -2, 1, -9, 12, -2, 24, -5, 13, -12, 3, -13, 5, -3, 2, -1, 2};
+
         long startTime = System.nanoTime();
         naive(testcase, testcase.length);
         long endTime = System.nanoTime();
