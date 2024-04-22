@@ -1,39 +1,42 @@
-public class naivRunner {
+import Model.MSSFinder;
+import Model.Subscore;
 
-    private static int l;
-    private static int r;
-    private static int maxscore;
+public class naivRunner implements MSSFinder {
+
 
     public static void main(String[] args) {
 
         int[] testcase = {5, -2, 5, -2, 1, -9, 12, -2, 24, -5, 13, -12, 3, -13, 5, -3, 2, -1, 2};
+        naivRunner runner = new naivRunner();
         long startTime = System.nanoTime();
-        naive(testcase, testcase.length);
+        Subscore result = runner.findMSS(testcase, testcase.length);
         long endTime = System.nanoTime();
         long duration = (endTime - startTime);
         double microseconds = (double) duration / 1000;
         System.out.println("Eingabe: " + arrayStr(testcase));
-        System.out.println("Ausgabe: " + "[" + l + "," + r + "] mit Score " + maxscore);
+        System.out.println("Ausgabe: " + "[" + result.getPair().getL() + "," + result.getPair().getR() + "] mit Score " + result.getScore());
         System.out.println("Laufzeit: " + microseconds + " μs");
     }
 
-    public static void naive(int[] a, int n) {
-        maxscore = 0;
-        l = 1;
-        r = 0;
+    public Subscore findMSS(int[] arr, int n) {
+        int maxscore = 0;
+        int l = 1;
+        int r = 0;
         for (int i = 0; i < n; i++) {
             for (int j = i; j < n; j++) {
                 int s = 0;
                 for (int k = i; k <= j; k++) {
-                    s = s + a[k];
+                    s = s + arr[k];
                 }
                 if (s >= maxscore) {
                     maxscore = s;
                     l = i;
                     r = j;
                 }
+
             }
         }
+        return new Subscore(l, r, maxscore);
     }
 
     public static String arrayStr(int[] arr){

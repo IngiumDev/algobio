@@ -1,29 +1,29 @@
-public class rekursivRunner {
+import Model.MSSFinder;
+import Model.Subscore;
 
-    private static int l;
-    private static int r;
-    private static int maxscore;
+public class rekursivRunner implements MSSFinder {
 
     public static void main(String[] args) {
 
         int[] testcase = {5, -2, 5, -2, 1, -9, 12, -2, 24, -5, 13, -12, 3, -13, 5, -3, 2, -1, 2};
+        rekursivRunner runner = new rekursivRunner();
         long startTime = System.nanoTime();
-        recursive(testcase, testcase.length);
+        Subscore result = runner.findMSS(testcase, testcase.length);
         long endTime = System.nanoTime();
         long duration = (endTime - startTime);
         double microseconds = (double) duration / 1000;
         System.out.println("Eingabe: " + arrayStr(testcase));
-        System.out.println("Ausgabe: " + "[" + l + "," + r + "] mit Score " + maxscore);
+        System.out.println("Ausgabe: " + "[" + result.getPair().getL() + "," + result.getPair().getR() + "] mit Score " + result.getScore());
         System.out.println("Laufzeit: " + microseconds + " μs");
     }
 
-    public static void recursive(int[] a, int n) {
-        maxscore = 0;
-        l = 1;
-        r = 0;
+    public Subscore findMSS(int[] arr, int n) {
+        int maxscore = 0;
+        int l = 1;
+        int r = 0;
         for (int i = 0; i < n; i++) {
             for (int j = i; j < n; j++) {
-                int s = calculateScore(i, j, a);
+                int s = calculateScore(i, j, arr);
                 if (s >= maxscore) {
                     maxscore = s;
                     l = i;
@@ -31,6 +31,7 @@ public class rekursivRunner {
                 }
             }
         }
+        return new Subscore(l, r, maxscore);
     }
 
     public static int calculateScore(int i, int j, int[] arr) {
@@ -38,8 +39,10 @@ public class rekursivRunner {
         else if (i == j) {
             return arr[i];
         } else {
-            int k = (i + j) / 2;
-            return calculateScore(i, k, arr) + calculateScore(k+1, j, arr);
+            //int k = (i + j) / 2;
+            int k = j-1;
+            //return calculateScore(i, k, arr) + calculateScore(k+1, j, arr);
+            return calculateScore(i, k, arr) + arr[j];
         }
     }
 
