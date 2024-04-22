@@ -1,5 +1,7 @@
 package Model;
 
+import java.util.Objects;
+
 public class CoordinatePair {
     int l;
     int r;
@@ -23,5 +25,18 @@ public class CoordinatePair {
 
     public void setR(int r) {
         this.r = r;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CoordinatePair that = (CoordinatePair) o;
+        return getL() == that.getL() && getR() == that.getR();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getL(), getR());
     }
 }

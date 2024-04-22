@@ -1,5 +1,5 @@
 package Model;
 
-public interface MSSFinder {
-    public Subscore findMSS(int[] arr, int n);
+public abstract class MSSFinder {
+    public abstract Subscore findMSS(int[] arr, int n);
 }

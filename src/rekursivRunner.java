@@ -1,7 +1,7 @@
 import Model.MSSFinder;
 import Model.Subscore;
 
-public class rekursivRunner implements MSSFinder {
+public class rekursivRunner extends MSSFinder {
 
     public static void main(String[] args) {
 
