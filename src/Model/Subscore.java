@@ -28,4 +28,5 @@ public class Subscore {
         this.pair = pair;
         this.score = score;
     }
+
 }
