@@ -2,11 +2,12 @@ import Model.Subscore;
 
 import java.util.ArrayList;
 
-public class AllMSS {
+public class ShortestMSS {
 
     /*
     Hier wird der optimale Algorithmus aus der Vorlesung implementiert, mit dem Unterschied, dass zusätzlich eine ArrayList verwaltet wird, sodass alle MSS gespeichert werden.
-    Somit kommen ein paar Elementaroperationen (Vergleiche, Löschen & Addieren von Listenelementen) hinzu, der Algorithmus läuft aber nach wie vor in linearer Zeit.
+    Im Vergleich zu AllMSS muss hier noch für jede MSS die Länge untersucht werden, dementsprechend kommen ein paar Elementaroperationen hinzu.
+    Die Komplexität ist ebenfalls O(n).
      */
 
     public ArrayList<Subscore> findMSS(int[] arr, int n) {
@@ -32,7 +33,15 @@ public class AllMSS {
                 if (!(l == rstart)) {
                     l = rstart;
                     r = i;
-                    list.add(new Subscore(l, r, max));
+                    if (!list.isEmpty()) {
+                        if (r-l < list.get(0).getPair().getR() - list.get(0).getPair().getL()){
+                            list.clear();
+                            list.add(new Subscore(l, r, max));
+                        }
+                        else if (r-l == list.get(0).getPair().getR() - list.get(0).getPair().getL()){
+                            list.add(new Subscore(l, r, max));
+                        }
+                    }
                 }
             }
         }
