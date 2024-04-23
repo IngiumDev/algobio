@@ -1,5 +1,7 @@
 package Model;
 
+import java.util.Objects;
+
 public class Subscore {
     CoordinatePair pair;
     int score;
@@ -29,4 +31,16 @@ public class Subscore {
         this.score = score;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Subscore subscore = (Subscore) o;
+        return getScore() == subscore.getScore() && Objects.equals(getPair(), subscore.getPair());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getPair(), getScore());
+    }
 }

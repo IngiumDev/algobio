@@ -1,7 +1,7 @@
 import Model.MSSFinder;
 import Model.Subscore;
 
-public class DivideAndConquer implements MSSFinder {
+public class DivideAndConquer extends MSSFinder {
     public static void main(String[] args) {
         int[] testcase = {5, -2, 5, -2, 1, -9, 12, -2, 24, -5, 13, -12, 3, -13, 5, -3, 2, -1, 2};
         long startTime = System.nanoTime();
@@ -17,7 +17,7 @@ public class DivideAndConquer implements MSSFinder {
 
     @Override
     public Subscore findMSS(int[] arr, int n) {
-        return MSS_DC(arr, 1, n - 1);
+        return MSS_DC(arr, 0, n - 1);
     }
 
     public Subscore MSS_DC(int[] arr, int i, int j) {
