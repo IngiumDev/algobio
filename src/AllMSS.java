@@ -1,8 +1,9 @@
+import Model.MultiMSSFinder;
 import Model.Subscore;
 
 import java.util.ArrayList;
 
-public class AllMSS {
+public class AllMSS extends MultiMSSFinder {
 
     /*
     Hier wird der optimale Algorithmus aus der Vorlesung implementiert, mit dem Unterschied, dass zusätzlich eine ArrayList verwaltet wird, sodass alle MSS gespeichert werden.

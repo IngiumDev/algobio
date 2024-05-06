@@ -1,4 +1,5 @@
 import Model.MSSFinder;
+import Model.MultiMSSFinder;
 
 import java.util.Random;
 
@@ -43,6 +44,15 @@ public class MSSUtils {
         instances[3] = new DivideAndConquer();
         instances[2] = new DPRunner();
         instances[4] = new OptimalRunner();
+        return instances;
+    }
+
+    public static MultiMSSFinder[] createMultiMSSFinderInstances() {
+        MultiMSSFinder[] instances = new MultiMSSFinder[3];
+        instances[0] = new AllMSS();
+        instances[1] = new ShortestMSS();
+        instances[2] = new OverlappingMSS();
+
         return instances;
     }
 }
