@@ -1,5 +1,7 @@
-import Model.MSSFinder;
-import Model.Subscore;
+package blatt1;
+
+import blatt1.Model.MSSFinder;
+import blatt1.Model.Subscore;
 
 public class DPRunner extends MSSFinder {
     public static void main(String[] args) {
@@ -18,15 +20,17 @@ public class DPRunner extends MSSFinder {
 
     public Subscore findMSS(int[] arr, int n) {
         int[][] S = new int[n][n];
-        for (int x = 0; x < n; x++){
+        for (int x = 0; x < n; x++) {
             S[x][x] = arr[x];
         }
         int max = 0, l = 1, r = 0;
-        for (int i = 0; i < n; i++){
-            for (int j = i+1; j < n; j++){
-                S[i][j] = S[i][j-1] + arr[j];
-                if (S[i][j] >= max){
-                    max = S[i][j]; l = i; r = j;
+        for (int i = 0; i < n; i++) {
+            for (int j = i + 1; j < n; j++) {
+                S[i][j] = S[i][j - 1] + arr[j];
+                if (S[i][j] >= max) {
+                    max = S[i][j];
+                    l = i;
+                    r = j;
                 }
             }
         }
@@ -44,4 +48,5 @@ public class DPRunner extends MSSFinder {
         }
         sb.append("]");
         return sb.toString();
-    }}
+    }
+}

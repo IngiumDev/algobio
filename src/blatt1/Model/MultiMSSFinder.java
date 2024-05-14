@@ -1,4 +1,4 @@
-package Model;
+package blatt1.Model;
 
 import java.util.ArrayList;
 

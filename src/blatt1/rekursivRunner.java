@@ -1,5 +1,7 @@
-import Model.MSSFinder;
-import Model.Subscore;
+package blatt1;
+
+import blatt1.Model.MSSFinder;
+import blatt1.Model.Subscore;
 
 public class rekursivRunner extends MSSFinder {
 
@@ -17,30 +19,13 @@ public class rekursivRunner extends MSSFinder {
         System.out.println("Laufzeit: " + microseconds + " μs");
     }
 
-    public Subscore findMSS(int[] arr, int n) {
-        int maxscore = 0;
-        int l = 1;
-        int r = 0;
-        for (int i = 0; i < n; i++) {
-            for (int j = i; j < n; j++) {
-                int s = calculateScore(i, j, arr);
-                if (s >= maxscore) {
-                    maxscore = s;
-                    l = i;
-                    r = j;
-                }
-            }
-        }
-        return new Subscore(l, r, maxscore);
-    }
-
     public static int calculateScore(int i, int j, int[] arr) {
         if (i > j) return 0;
         else if (i == j) {
             return arr[i];
         } else {
             //int k = (i + j) / 2;
-            int k = j-1;
+            int k = j - 1;
             //return calculateScore(i, k, arr) + calculateScore(k+1, j, arr);
             return calculateScore(i, k, arr) + arr[j];
         }
@@ -57,5 +42,22 @@ public class rekursivRunner extends MSSFinder {
         }
         sb.append("]");
         return sb.toString();
+    }
+
+    public Subscore findMSS(int[] arr, int n) {
+        int maxscore = 0;
+        int l = 1;
+        int r = 0;
+        for (int i = 0; i < n; i++) {
+            for (int j = i; j < n; j++) {
+                int s = calculateScore(i, j, arr);
+                if (s >= maxscore) {
+                    maxscore = s;
+                    l = i;
+                    r = j;
+                }
+            }
+        }
+        return new Subscore(l, r, maxscore);
     }
 }

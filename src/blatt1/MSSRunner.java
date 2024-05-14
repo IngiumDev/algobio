@@ -1,5 +1,7 @@
-import Model.MSSFinder;
-import Model.Subscore;
+package blatt1;
+
+import blatt1.Model.MSSFinder;
+import blatt1.Model.Subscore;
 import net.sourceforge.argparse4j.ArgumentParsers;
 import net.sourceforge.argparse4j.helper.HelpScreenException;
 import net.sourceforge.argparse4j.inf.ArgumentParser;
@@ -103,13 +105,13 @@ public class MSSRunner {
         try (java.io.FileWriter writer = new java.io.FileWriter("benchmark_results.csv")) {
             writer.write("Algorithm/Size");
             for (int size : MSSUtils.SIZES_TO_BENCHMARK) {
-                writer.write(","+size);
+                writer.write("," + size);
             }
             writer.write("\n");
             for (int i = 0; i < finders.length; i++) {
                 writer.write(finders[i].getClass().getSimpleName());
                 for (double time : results.get(i)) {
-                    writer.write(","+time);
+                    writer.write("," + time);
                 }
                 writer.write("\n");
             }

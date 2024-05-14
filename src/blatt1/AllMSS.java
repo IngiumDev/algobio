@@ -1,14 +1,15 @@
-import Model.MultiMSSFinder;
-import Model.Subscore;
+package blatt1;
+
+import blatt1.Model.MultiMSSFinder;
+import blatt1.Model.Subscore;
 
 import java.util.ArrayList;
 
-public class ShortestMSS extends MultiMSSFinder {
+public class AllMSS extends MultiMSSFinder {
 
     /*
     Hier wird der optimale Algorithmus aus der Vorlesung implementiert, mit dem Unterschied, dass zusätzlich eine ArrayList verwaltet wird, sodass alle MSS gespeichert werden.
-    Im Vergleich zu AllMSS muss hier noch für jede MSS die Länge untersucht werden, dementsprechend kommen ein paar Elementaroperationen hinzu.
-    Die Komplexität ist ebenfalls O(n).
+    Somit kommen ein paar Elementaroperationen (Vergleiche, Löschen & Addieren von Listenelementen) hinzu, der Algorithmus läuft aber nach wie vor in linearer Zeit.
      */
 
     public ArrayList<Subscore> findMSS(int[] arr, int n) {
@@ -34,15 +35,7 @@ public class ShortestMSS extends MultiMSSFinder {
                 if (!(l == rstart)) {
                     l = rstart;
                     r = i;
-                    if (!list.isEmpty()) {
-                        if (r-l < list.get(0).getPair().getR() - list.get(0).getPair().getL()){
-                            list.clear();
-                            list.add(new Subscore(l, r, max));
-                        }
-                        else if (r-l == list.get(0).getPair().getR() - list.get(0).getPair().getL()){
-                            list.add(new Subscore(l, r, max));
-                        }
-                    }
+                    list.add(new Subscore(l, r, max));
                 }
             }
         }

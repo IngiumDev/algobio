@@ -1,5 +1,7 @@
-import Model.MultiMSSFinder;
-import Model.Subscore;
+package blatt1;
+
+import blatt1.Model.MultiMSSFinder;
+import blatt1.Model.Subscore;
 
 import java.util.ArrayList;
 

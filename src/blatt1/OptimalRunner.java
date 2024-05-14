@@ -1,5 +1,7 @@
-import Model.MSSFinder;
-import Model.Subscore;
+package blatt1;
+
+import blatt1.Model.MSSFinder;
+import blatt1.Model.Subscore;
 
 public class OptimalRunner extends MSSFinder {
 

@@ -1,5 +1,7 @@
-import Model.MSSFinder;
-import Model.Subscore;
+package blatt1;
+
+import blatt1.Model.MSSFinder;
+import blatt1.Model.Subscore;
 
 public class naivRunner extends MSSFinder {
 
@@ -39,7 +41,7 @@ public class naivRunner extends MSSFinder {
         return new Subscore(l, r, maxscore);
     }
 
-    public static String arrayStr(int[] arr){
+    public static String arrayStr(int[] arr) {
         StringBuilder sb = new StringBuilder();
         sb.append("[");
         for (int i = 0; i < arr.length; i++) {
