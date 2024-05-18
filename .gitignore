@@ -13,8 +13,8 @@
 .idea/**/shelf
 .idea/
 .idea/*
-data/
-data/*
+src/blatt2/data/
+src/blatt2/data/*
 
 # AWS User-specific
 .idea/**/aws.xml
@@ -151,7 +151,8 @@ replay_pid*
 .LSOverride
 
 # Icon must end with two \r
-Icon
+Icon
+
 
 # Thumbnails
 ._*
