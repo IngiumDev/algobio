@@ -33,7 +33,7 @@ public class Aufgabe2 {
 
         long endTime = System.nanoTime();
         long duration = (endTime - startTime);
-        double microseconds = (double) duration / 1000;
+        double microseconds = (double) duration / 1000_000;
 
         System.out.println("traversed graph in " + stepCount + " steps in " + microseconds + " ms");
         writeBfsStepsToFile(outFilePath);
@@ -58,8 +58,8 @@ public class Aufgabe2 {
     private static void dfs(int at, int prev) {
         if (prev >= 0) {
             double distance = utils.calculateDistance(g.getCities().get(at), g.getCities().get(prev));
-            String distanceStr =  String.format("%.2f", distance);
-            tsv.add(prev+"\t"+at+"\t"+distanceStr);
+            String distanceStr = String.format("%.2f", distance);
+            tsv.add(prev + "\t" + at + "\t" + distanceStr);
         }
         stepCount++;
         visited.put(at, true);
@@ -81,6 +81,7 @@ public class Aufgabe2 {
 
     private static void writeBfsStepsToFile(String filePath) throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+            writer.write("id (von)\tid (nach)\tDistanz\n");
             for (String step : tsv) {
                 writer.write(step);
                 writer.newLine();
