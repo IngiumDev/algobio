@@ -35,7 +35,7 @@ public class Aufgabe2 {
         long duration = (endTime - startTime);
         double microseconds = (double) duration / 1000_000;
 
-        System.out.println("traversed graph in " + stepCount + " steps in " + microseconds + " ms");
+        System.out.println("traversed graph in " + (stepCount-1) + " steps in " + microseconds + " ms");
         writeBfsStepsToFile(outFilePath);
     }
 
@@ -48,7 +48,7 @@ public class Aufgabe2 {
             // Add city2 to the adjacency list of city1
             adjacent.computeIfAbsent(city1, k -> new ArrayList<>()).add(city2);
 
-            // Add city1 to the adjacency list of city2
+             // Add city1 to the adjacency list of city2
             adjacent.computeIfAbsent(city2, k -> new ArrayList<>()).add(city1);
         }
         int minKey = g.getCities().keySet().stream().min(Comparator.naturalOrder()).get();
