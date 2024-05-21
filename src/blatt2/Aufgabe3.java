@@ -2,6 +2,9 @@ package blatt2;
 
 import blatt2.structs.*;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
 
 public class Aufgabe3 {
@@ -18,14 +21,23 @@ public class Aufgabe3 {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         g = new Graph("src/cities.250.tsv");
+        long startTime = System.nanoTime();
         CityPair[] res = kruskal(g);
-        int sum = 0;
+        long endTime = System.nanoTime();
+        long duration = (endTime - startTime);
+        double milliSeconds = (double) duration / 1000_000;
+
+        double sum = 0;
         for (CityPair c : res) {
             sum += utils.calculateDistance(c.getCity1(), c.getCity2());
         }
-        System.out.println(sum);
+
+        writeMSTStepsToFile(outFilePath, res);
+
+        System.out.println("done creating mst with " + res.length + " edges in " + milliSeconds + " ms");
+        System.out.println("sum of edge weights: " + sum);
     }
 
     public static CityPair[] kruskal(Graph g) {
@@ -43,7 +55,7 @@ public class Aufgabe3 {
         // Allocate memory for results
         CityPair results[] = new CityPair[V - 1];
 
-        while (noOfEdges < V - 1) {
+        while (noOfEdges < V-1) {
 
             // Pick the smallest edge. And increment
             // the index for next iteration
@@ -100,5 +112,15 @@ public class Aufgabe3 {
 
         subsets.get(i).parent = findRoot(subsets, subsets.get(i).parent);
         return subsets.get(i).parent;
+    }
+
+    private static void writeMSTStepsToFile(String filePath, CityPair[] res) throws IOException {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+            for (CityPair c : res) {
+                String distance = String.format("%.2f", utils.calculateDistance(c.getCity1(), c.getCity2()));
+                writer.write(c.getCity1().getId() + "\t" + c.getCity2().getId() + "\t" + distance);
+                writer.newLine();
+            }
+        }
     }
 }
