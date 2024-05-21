@@ -22,6 +22,7 @@ public class Aufgabe2 {
         tsv = new ArrayList<>();
 
         g = new Graph("src/cities.250.tsv");
+        g.getDistances().entrySet().removeIf(entry -> entry.getValue() < 20.24);
 
         for (Integer cityId : g.getCities().keySet()) {
             visited.put(cityId, false);
