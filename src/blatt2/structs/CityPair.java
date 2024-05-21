@@ -23,4 +23,12 @@ public class CityPair {
         CityPair cityPair = (CityPair) o;
         return Objects.equals(city1, cityPair.city1) && Objects.equals(city2, cityPair.city2) || Objects.equals(city1, cityPair.city2) && Objects.equals(city2, cityPair.city1);
     }
+
+    public City getCity1() {
+        return city1;
+    }
+
+    public City getCity2() {
+        return city2;
+    }
 }
