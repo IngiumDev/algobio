@@ -116,6 +116,7 @@ public class Aufgabe3 {
 
     private static void writeMSTStepsToFile(String filePath, CityPair[] res) throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+            writer.write(res.length+1 + "\t" + res.length + "\n");
             for (CityPair c : res) {
                 String distance = String.format("%.2f", utils.calculateDistance(c.getCity1(), c.getCity2()));
                 writer.write(c.getCity1().getId() + "\t" + c.getCity2().getId() + "\t" + distance);
