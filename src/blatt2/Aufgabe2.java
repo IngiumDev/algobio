@@ -21,7 +21,7 @@ public class Aufgabe2 {
         adjacent = new HashMap<>();
         tsv = new ArrayList<>();
 
-        g = new Graph("src/cities.250.tsv");
+        g = new Graph(args[0]);
         g.getDistances().entrySet().removeIf(entry -> entry.getValue() >= 20.24);
 
         for (Integer cityId : g.getCities().keySet()) {
