@@ -58,9 +58,7 @@ public class Graph {
         List<List<String>> lines = utils.readSeparator(filepath, "\t");
         g.addCities(lines);
         long endTime = System.currentTimeMillis();
-        // read 250 cities in 79 ms
         System.out.print("read " + g.cities.size() + " cities in " + (endTime - startTime) + "ms\n");
-        //generated 62250 edges in 17 ms
         startTime = System.currentTimeMillis();
         g.calculateDistances();
         endTime = System.currentTimeMillis();
