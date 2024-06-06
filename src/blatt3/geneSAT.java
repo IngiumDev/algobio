@@ -9,6 +9,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class geneSAT {
@@ -23,11 +24,12 @@ public class geneSAT {
             String activeGenesPath = res.get("actives");
 
             HashMap<String, HashSet<String>> networkMap = loadNetwork(regNetworkPath);
-            HashSet<String> activeGenes = loadActiveGenes(activeGenesPath);
+            HashSet<String> activeGenes = loadActiveGenes(activeGenesPath, networkMap);
             HashSet<String> inActiveGenes = new HashSet<>(networkMap.keySet());
             inActiveGenes.removeAll(activeGenes);
+            Map<String, Integer> TFmap = mapTFs(regNetworkPath);
 
-            makeSAT(networkMap, activeGenes, inActiveGenes);
+            makeSAT(networkMap, activeGenes, inActiveGenes, TFmap);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -53,7 +55,7 @@ public class geneSAT {
         return networkMap;
     }
 
-    private static HashSet<String> loadActiveGenes(String filePath) throws IOException {
+    private static HashSet<String> loadActiveGenes(String filePath, HashMap<String, HashSet<String>> networkMap) throws IOException {
         HashSet<String> activeGenes = new HashSet<>();
         BufferedReader reader = new BufferedReader(new FileReader(filePath));
         String line;
@@ -62,15 +64,49 @@ public class geneSAT {
             activeGenes.add(line.trim());
         }
         reader.close();
+
+        // Keep only the genes that are also keys in the networkMap
+        activeGenes.retainAll(networkMap.keySet());
+
         return activeGenes;
     }
 
-    private static void makeSAT(HashMap<String, HashSet<String>> networkMap, HashSet<String> activeGenes, HashSet<String> inActiveGenes) {
+    private static void makeSAT(HashMap<String, HashSet<String>> networkMap, HashSet<String> activeGenes, HashSet<String> inActiveGenes, Map<String, Integer> TFmap) {
+        System.out.println("p cnf " + TFmap.size() + " " + (activeGenes.size() + inActiveGenes.size()));
         for (String gene : activeGenes) {
             for (String tf : networkMap.get(gene)) {
-                System.out.print(tf + " ");
+                Integer tfIndex = TFmap.get(tf);
+                System.out.print(tfIndex + " ");
             }
-            System.out.println();
+            System.out.print("0\n");
         }
+        for (String gene : inActiveGenes) {
+            for (String tf : networkMap.get(gene)) {
+                Integer tfIndex = TFmap.get(tf);
+                System.out.print("-" + tfIndex + " ");
+            }
+            System.out.print("0\n");
+        }
+    }
+
+    public static Map<String, Integer> mapTFs(String filePath) throws IOException {
+        Map<String, Integer> tfMap = new HashMap<>();
+        BufferedReader reader = new BufferedReader(new FileReader(filePath));
+        String line;
+        int count = 1;
+
+        while ((line = reader.readLine()) != null) {
+            if (!line.startsWith("#")) { // Skip the header line
+                String[] parts = line.split("\\s+");
+                if (parts.length == 2) {
+                    String tf = parts[0];
+                    if (!tfMap.containsKey(tf)) {
+                        tfMap.put(tf, count++);
+                    }
+                }
+            }
+        }
+        reader.close();
+        return tfMap;
     }
 }
