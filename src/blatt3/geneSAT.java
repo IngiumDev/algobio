@@ -10,27 +10,34 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
+import java.io.*;
 
 public class geneSAT {
     public static void main(String[] args) {
         ArgumentParser parser = ArgumentParsers.newFor("geneSAT").build().defaultHelp(true).description("GeneSAT Application");
-        parser.addArgument("-network").required(true).help("Path to the regulatory network file");
-        parser.addArgument("-actives").required(true).help("Path to the active genes file");
+        parser.addArgument("-network").help("Path to the regulatory network file");
+        parser.addArgument("-actives").help("Path to the active genes file");
+        parser.addArgument("-cnf").help("Path to the DIMACS file");
+        parser.addArgument("-sol").help("Path to the solver output file");
 
         try {
             Namespace res = parser.parseArgs(args);
             String regNetworkPath = res.get("network");
             String activeGenesPath = res.get("actives");
+            String dimacsFilePath = res.getString("cnf");
+            String solverOutputPath = res.getString("sol");
 
-            HashMap<String, HashSet<String>> networkMap = loadNetwork(regNetworkPath);
-            HashSet<String> activeGenes = loadActiveGenes(activeGenesPath, networkMap);
-            HashSet<String> inActiveGenes = new HashSet<>(networkMap.keySet());
-            inActiveGenes.removeAll(activeGenes);
-            Map<String, Integer> TFmap = mapTFs(regNetworkPath);
 
-            makeSAT(networkMap, activeGenes, inActiveGenes, TFmap);
-
+            if (regNetworkPath != null && activeGenesPath != null) {
+                HashMap<String, HashSet<String>> networkMap = loadNetwork(regNetworkPath);
+                HashSet<String> activeGenes = loadActiveGenes(activeGenesPath, networkMap);
+                HashSet<String> inActiveGenes = new HashSet<>(networkMap.keySet());
+                inActiveGenes.removeAll(activeGenes);
+                Map<String, Integer> TFmap = mapTFs(regNetworkPath);
+                makeSAT(networkMap, activeGenes, inActiveGenes, TFmap);
+            } else if (dimacsFilePath != null) {
+                runSolver(dimacsFilePath);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -108,5 +115,16 @@ public class geneSAT {
         }
         reader.close();
         return tfMap;
+    }
+
+    private static void runSolver(String dimacsFilePath) throws IOException, InterruptedException {
+        ProcessBuilder builder = new ProcessBuilder("src/akmaxsat_1.1/akmaxsat", dimacsFilePath);
+        Process process = builder.start();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+        String line;
+        while ((line = reader.readLine()) != null) {
+            System.out.println(line);
+        }
+        process.waitFor();
     }
 }
