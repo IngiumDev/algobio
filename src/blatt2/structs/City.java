@@ -15,6 +15,10 @@ public class City {
         this.lambda = lambda;
     }
 
+    public City(int id) {
+        this.id = id;
+    }
+
     public double[] getCoordinates() {
         return new double[]{phi, lambda};
     }
