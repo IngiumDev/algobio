@@ -13,41 +13,12 @@ import java.util.*;
 import static blatt2.Aufgabe3.kruskal;
 import static blatt2.utils.readSeparator;
 
-/*
-In der Vorlesung haben Sie eine 2-Approximation für das TravellingSalesmanProblem (TSP)
-unter Zuhilfenahme eines minimalen Spannbaumes (MST) kennengelernt.
-Aufgabe:
-Implementieren Sie diese 2-Approximation für das TSP Problem.
-Benutzen Sie hierfür Ihre Graph-Datenstruktur aus Praxisblatt 2.
-Eingabe:
-Der vollständige Städtegraph aus Praxisblatt 2.
-Ein vorberechneter MST für eine Probleminstanz des TSP (siehe Datei cities.250.mst.edgelist
-auf Moodle) oder Ihr eigener MST aus Praxisblatt 2.
-Ausgabe:
-Eine gewichtete Kantenliste (edge list), welche die Rundreise der 2-Approximation für das TSP
-beschreibt
-
-edgelist format:
-source target weight
-2731	1936	0.01
-1309	1936	0.01
-1044	587	0.02
-1067	2658	0.03
-2076	866	0.03
-2114	1915	0.03
-1977	2518	0.04
-1461	2496	0.04
-271	965	0.05
- */
 public class Aufgabe1 {
     public static void main(String[] args) {
         ArgumentParser parser = ArgumentParsers.newFor("Aufgabe1").build().defaultHelp(true).description("Find 2-Approximation for TSP");
-        parser.addArgument("-c", "--cities")
-                .required(true)
-                .help("File path for the cities file").metavar("<cities>");
+        parser.addArgument("-c", "--cities").required(true).help("File path for the cities file").metavar("<cities>");
 
-        parser.addArgument("-m", "--mst")
-                .help("File path for the MST file (optional)").metavar("<mst>");
+        parser.addArgument("-m", "--mst").help("File path for the MST file (optional)").metavar("<mst>");
 
 
         try {
@@ -72,7 +43,6 @@ public class Aufgabe1 {
             }
             runTwoApproximationTSP(cityPairs, g);
         } else {
-            // TODO: kruskal
             runTwoApproximationTSP(Arrays.stream(kruskal(g)).toList(), g);
         }
     }
@@ -84,7 +54,7 @@ public class Aufgabe1 {
         // DFS
         List<Integer> visited = new ArrayList<>();
         visited.add(startCityId);
-        depthFirstSearch(startCityId, visited, cityPairs, g);
+        depthFirstSearch(startCityId, visited, cityPairs);
 
         // Remove duplicate cities (triangle inequality)
         List<Integer> visitedWithoutDuplicates = new ArrayList<>();
@@ -96,7 +66,7 @@ public class Aufgabe1 {
         }
 
         //  Add the last city to the beginning to complete the cycle
-        visitedWithoutDuplicates.add(visitedWithoutDuplicates.get(0));
+        visitedWithoutDuplicates.add(visitedWithoutDuplicates.getFirst());
 
         // Now we have the cycle, we can create a List of Pair<CityPair, Double> to represent the cycle
         List<Pair<CityPair, Double>> cycle = new ArrayList<>();
@@ -119,17 +89,17 @@ public class Aufgabe1 {
 
     }
 
-    private static void depthFirstSearch(int cityID, List<Integer> visited, List<CityPair> cityPairs, Graph g) {
+    private static void depthFirstSearch(int cityID, List<Integer> visited, List<CityPair> cityPairs) {
 
         List<Integer> destinations = getDestinations(cityID, cityPairs);
-        int lastVisited = visited.get(visited.size() - 1);
+        int lastVisited = visited.getLast();
         visited.add(cityID);
         for (int destination : destinations) {
             if (destination == lastVisited) {
                 continue;
             }
 
-            depthFirstSearch(destination, visited, cityPairs, g);
+            depthFirstSearch(destination, visited, cityPairs);
             visited.add(cityID);
         }
     }
