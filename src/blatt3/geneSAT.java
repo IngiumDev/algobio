@@ -12,6 +12,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.io.*;
 
+
+
 public class geneSAT {
     public static void main(String[] args) {
         ArgumentParser parser = ArgumentParsers.newFor("geneSAT").build().defaultHelp(true).description("GeneSAT Application");
@@ -36,7 +38,8 @@ public class geneSAT {
                 Map<String, Integer> TFmap = mapTFs(regNetworkPath);
                 makeSAT(networkMap, activeGenes, inActiveGenes, TFmap);
             } else if (dimacsFilePath != null) {
-                runSolver(dimacsFilePath);
+                //runSolver(dimacsFilePath);
+                runMaxSatSolver(dimacsFilePath);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -118,7 +121,7 @@ public class geneSAT {
     }
 
     private static void runSolver(String dimacsFilePath) throws IOException, InterruptedException {
-        ProcessBuilder builder = new ProcessBuilder("src/akmaxsat_1.1/akmaxsat", dimacsFilePath);
+        ProcessBuilder builder = new ProcessBuilder("/akmaxsat_1.1/akmaxsat", dimacsFilePath);
         Process process = builder.start();
         BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
         String line;
@@ -126,5 +129,41 @@ public class geneSAT {
             System.out.println(line);
         }
         process.waitFor();
+    }
+
+    private static void runMaxSatSolver(String cnfOutput) throws IOException {
+        //String solverOutput = currentDirectory + File.separator + "solverOutput.txt";
+        String solverOutput = "lol.txt";
+
+
+        InputStream inputStream = geneSAT.class.getResourceAsStream("/akmaxsat_1.1/akmaxsat");
+
+        File akmaxsatFile = File.createTempFile("akmaxsat", ".exe");
+
+        try (OutputStream outputStream = new FileOutputStream(akmaxsatFile)) {
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, bytesRead);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        akmaxsatFile.setExecutable(true);
+
+        ProcessBuilder processBuilder = new ProcessBuilder(akmaxsatFile.getAbsolutePath(), cnfOutput);
+        processBuilder.redirectOutput(new File(solverOutput));
+        //processBuilder.redirectError(new File("error.log"));
+        Process process = processBuilder.start();
+        try {
+            process.waitFor();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        /*if(cmd.hasOption("all")){
+            backMapping(solverOutput, tfMap);
+        }*/
     }
 }
